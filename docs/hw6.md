@@ -1,4 +1,4 @@
-# Homework 5: Async-Conditioner
+# Homework 6: Async-Conditioner
 
 ## Overview
 Created debouncer and one-pulse components and created test benches to ensure functionality. These were then combined with the synchronizer from homework 2 to create a async_conditioner component. A async_conditioner testbench was also created.
