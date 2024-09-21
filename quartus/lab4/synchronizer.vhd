@@ -11,7 +11,8 @@ end entity synchronizer;
 
 architecture rtl of synchronizer is
 
-  signal Q1 : std_logic;
+  signal Q1 : std_ulogic;
+  signal int_sync : std_ulogic;
 
 begin
 
@@ -19,8 +20,10 @@ begin
   begin
     if rising_edge(clk) then
       Q1 <= async;
-      sync <= Q1;
+      int_sync <= Q1;
     end if;
   end process;
+
+  sync <= int_sync;
 
 end architecture;

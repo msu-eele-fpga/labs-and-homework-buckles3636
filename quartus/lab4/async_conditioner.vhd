@@ -54,6 +54,7 @@ architecture rtl of async_conditioner is
 
   signal N1 : std_ulogic := '0';
   signal N2 : std_ulogic := '0';
+  signal int_sync : std_ulogic := '0';
 
 begin
 
@@ -85,7 +86,9 @@ begin
   clk   => clk,
   rst   => rst,
   input => N2,
-  pulse => sync
+  pulse => int_sync
   );
+
+  sync <= int_sync;
 
 end architecture;

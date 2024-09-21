@@ -15,6 +15,7 @@ end entity one_pulse;
 architecture rtl of one_pulse is
 
   signal prev : std_ulogic;
+  signal int_pulse : std_ulogic;
 
 begin
 
@@ -23,14 +24,14 @@ begin
   begin
 
     if (rst = '1') then
-      pulse <= '0';
+      int_pulse <= '0';
       prev  <= '0';
 
     elsif (rising_edge(clk)) then
-      if (pulse = '1') then --if pulse was on  last cycle, turn it off
-        pulse <= '0';
+      if (int_pulse = '1') then --if pulse was on  last cycle, turn it off
+        int_pulse <= '0';
       elsif (prev = '0' and input = '1') then --if input goes from low to high turn on pulse
-        pulse <= '1';
+        int_pulse <= '1';
       end if;
 
       prev <= input; --set prev so it is the previous value every clock
@@ -38,5 +39,7 @@ begin
     end if;
 
   end process;
+  
+  pulse <= int_pulse;
 
 end architecture;
