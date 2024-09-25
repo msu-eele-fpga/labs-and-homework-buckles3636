@@ -3,12 +3,10 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity led_patterns is
-  generic
-  (
-    system_clock_period : time := 20 ns
+  generic (
+    system_clock_period : time
   );
-  port
-  (
+  port (
     clk             : in std_ulogic;
     rst             : in std_ulogic;
     push_button     : in std_ulogic;
@@ -27,8 +25,8 @@ architecture rtl of led_patterns is
   signal current_state, next_state : State_Type;
 
   --Signals to use timed counter
-  signal counter_enable : boolean;
-  signal counter_done   : boolean;
+  signal tc_enable : boolean;
+  signal tc_done   : boolean;
 
   --Sub clock signal for patterns
   signal sub_clk : std_ulogic;
@@ -37,17 +35,14 @@ architecture rtl of led_patterns is
   signal pb_debounced : std_ulogic;
 
   --Signals for led patterns
-  signal led_S0, led_S1, led_S2, led_S3, led_S4 : std_ulogic_vector(6 downto 0);
-  signal int_led : std_ulogic_vector(6 downto 0);
-
+  signal led_S0, led_S1, led_S2, led_S3, led_S4, led_S5 : std_ulogic_vector(6 downto 0);
+  signal int_led                                        : std_ulogic_vector(6 downto 0);
   --Define Componets
   component clock_divider is
-    generic
-    (
+    generic (
       clk_period : time
     );
-    port
-    (
+    port (
       clk         : in std_ulogic;
       rst         : in std_ulogic;
       base_period : in unsigned(7 downto 0);
@@ -55,14 +50,25 @@ architecture rtl of led_patterns is
     );
   end component;
 
+  component timed_counter is
+    generic (
+      clk_period : time;
+      count_time : time
+    );
+
+    port (
+      clk    : in std_ulogic;
+      enable : in boolean;
+      done   : out boolean
+    );
+  end component;
+
   component async_conditioner is
-    generic
-    (
+    generic (
       clk_period    : time;
       debounce_time : time
     );
-    port
-    (
+    port (
       clk   : in std_ulogic;
       rst   : in std_ulogic;
       async : in std_ulogic;
@@ -74,10 +80,9 @@ begin
 
   --Instantiate Components
   ASYNC : async_conditioner
-  generic
-  map (
-  clk_period    => system_clock_period,
-  debounce_time => 10 ms
+  generic map(
+    clk_period    => system_clock_period,
+    debounce_time => 10 ms
   )
   port map
   (
@@ -88,16 +93,27 @@ begin
   );
 
   CD1 : clock_divider
-  generic
-  map (
-  clk_period => system_clock_period
+  generic map(
+    clk_period => system_clock_period
   )
-  port map 
+  port map
   (
-  clk         => clk,
-  rst         => rst,
-  base_period => base_period,
-  sub_clk     => sub_clk
+    clk         => clk,
+    rst         => rst,
+    base_period => base_period,
+    sub_clk     => sub_clk
+  );
+
+  TC1 : timed_counter
+  generic map(
+    clk_period => system_clock_period,
+    count_time => 1 sec
+  )
+  port map
+  (
+    clk    => clk,
+    enable => tc_enable,
+    done   => tc_done
   );
 
   --Main State Process
@@ -107,96 +123,123 @@ begin
       current_state <= S0;
     elsif (rising_edge(clk)) then
       if (pb_debounced = '1') then
-        current_state <= next_state;
+
+        case (switches) is
+          when "0001" =>
+            current_state <= S1;
+              when "0010" =>
+              current_state <= S2;
+              when "0011" =>
+              current_state <= S3;
+              when "0100" =>
+              current_state <= S4;
+              when others =>
+              current_state <= S0;
+            end case;
+
+        end if;
       end if;
-    end if;
-  end process;
+    end process;
 
-  NEXT_STATE_LOGIC : process (current_state) is
-  begin
-    case (current_state) is
-      when S0 =>
-        next_state <= S1;
-      when S1 =>
-        next_state <= S2;
-      when S2 =>
-        next_state <= S3;
-      when S3 =>
-        next_state <= S4;
-      when S4 =>
-        next_state <= S0;
-    end case;
-  end process;
+    OUTPUT_LOGIC : process (current_state, tc_done) is
+    begin
+      case (current_state) is
+        when S0 =>
+          tc_enable <= true;
+          if (tc_done = true) then
+            int_led   <= led_S0;
+          else
+            int_led <= "0000001";
+          end if;
 
-  OUTPUT_LOGIC : process (current_state) is
-  begin
-    case (current_state) is
-      when S0 =>
-        int_led <= led_S0;
-      when S1 =>
-        int_led <= led_S1;
-      when S2 =>
-        int_led <= led_S2;
-      when S3 =>
-        int_led <= led_S3;
-      when S4 =>
-        int_led <= led_S4;
-    end case;
-  end process;
+        when S1 =>
+          tc_enable <= true;
+          if (tc_done = true) then
+            int_led   <= led_S1;
+          else
+            int_led <= "0000010";
+          end if;
 
-  --Led pattern processes
-  LED_SHIFT_RIGHT : process (sub_clk, rst)
-  begin
-    if rst = '1' then
-      led_S0 <= "1000000"; -- rst to initial pattern
-    elsif rising_edge(sub_clk) then
-      led_S0 <= led_S0(0) & led_S0(6 downto 1); -- Shift right
-    end if;
-  end process;
+        when S2 =>
+          tc_enable <= true;
+          if (tc_done = true) then
+            int_led   <= led_S2;
+          else
+            int_led <= "0000011";
+          end if;
 
-  TWO_LED_SHIFT_LEFT : process (sub_clk, rst)
-  begin
-    if rst = '1' then
-      led_S1 <= "0000011"; -- rst to initial pattern
-    elsif rising_edge(sub_clk) then
-      led_S1 <= led_S1(5 downto 0) & led_S1(6); -- Shift left
-    end if;
-  end process;
+        when S3 =>
+          tc_enable <= true;
+          if (tc_done = true) then
+            int_led   <= led_S3;
+          else
+            int_led <= "0000100";
+          end if;
 
-  BINARY_UP_COUNTER : process (sub_clk, rst)
-    variable up_counter : unsigned(6 downto 0) := (others => '0'); -- 7-bit counter
-  begin
-    if rst = '1' then
-      up_counter := (others => '0'); -- rst counter to zero
-      led_S2 <= (others     => '0'); -- Clear LEDs when rst
-    elsif rising_edge(sub_clk) then
-      up_counter := up_counter + 1; -- Increment the counter
-      led_S2 <= std_ulogic_vector(up_counter); -- Assign counter value to LEDs
-    end if;
-  end process;
+        when S4 =>
+          tc_enable <= true;
+          if (tc_done = true) then
+            int_led   <= led_S1;
+          else
+            int_led <= "0000101";
+          end if;
 
-  BINARY_DOWN_COUNTER : process (sub_clk, rst)
-    variable down_counter : unsigned(6 downto 0) := (others => '1'); -- 7-bit counter
-  begin
-    if rst = '1' then
-      down_counter := (others => '1'); -- rst counter to max
-      led_S3 <= (others       => '0'); -- Clear LEDs when rst
-    elsif rising_edge(sub_clk) then
-      down_counter := down_counter - 1; -- Increment the counter
-      led_S3 <= std_ulogic_vector(down_counter); -- Assign counter value to LEDs
-    end if;
-  end process;
+      end case;
+    end process;
 
-  LED_PONG : process (sub_clk, rst)
-  begin
-    if rst = '1' then
-      led_S4 <= "1001001"; -- rst to initial pattern
-    elsif rising_edge(sub_clk) then
-      led_S4 <= led_S4(4) & led_S4(6 downto 5) & '1' & led_S4(2) & led_S4(1 downto 0); --"crash" sides into each other
-    end if;
-  end process;
-  
-  led(6 downto 0) <= int_led;
-  led(7) <= sub_clk;
-  
-end architecture;
+    --Led pattern processes
+    LED_SHIFT_RIGHT : process (sub_clk, rst)
+    begin
+      if rst = '1' then
+        led_S0 <= "1000000"; -- rst to initial pattern
+      elsif rising_edge(sub_clk) then
+        led_S0 <= led_S0(0) & led_S0(6 downto 1); -- Shift right
+      end if;
+    end process;
+
+    TWO_LED_SHIFT_LEFT : process (sub_clk, rst)
+    begin
+      if rst = '1' then
+        led_S1 <= "0000011"; -- rst to initial pattern
+      elsif rising_edge(sub_clk) then
+        led_S1 <= led_S1(5 downto 0) & led_S1(6); -- Shift left
+      end if;
+    end process;
+
+    BINARY_UP_COUNTER : process (sub_clk, rst)
+      variable up_counter : unsigned(6 downto 0) := (others => '0'); -- 7-bit counter
+    begin
+      if rst = '1' then
+        up_counter := (others => '0'); -- rst counter to zero
+        led_S2 <= (others     => '0'); -- Clear LEDs when rst
+      elsif rising_edge(sub_clk) then
+        up_counter := up_counter + 1; -- Increment the counter
+        led_S2 <= std_ulogic_vector(up_counter); -- Assign counter value to LEDs
+      end if;
+    end process;
+
+    BINARY_DOWN_COUNTER : process (sub_clk, rst)
+      variable down_counter : unsigned(6 downto 0) := (others => '1'); -- 7-bit counter
+    begin
+      if rst = '1' then
+        down_counter := (others => '1'); -- rst counter to max
+        led_S3 <= (others       => '0'); -- Clear LEDs when rst
+      elsif rising_edge(sub_clk) then
+        down_counter := down_counter - 1; -- Increment the counter
+        led_S3 <= std_ulogic_vector(down_counter); -- Assign counter value to LEDs
+      end if;
+    end process;
+
+    LED_PONG : process (sub_clk, rst)
+    begin
+      if rst = '1' then
+        led_S4 <= "1001001"; -- rst to initial pattern
+      elsif rising_edge(sub_clk) then
+        led_S4 <= led_S4(4) & led_S4(6 downto 5) & '1' & led_S4(1 downto 0) & led_S4(2); --"crash" sides into each other
+      end if;
+    end process;
+
+    led(6 downto 0) <= int_led;
+    led(7)          <= sub_clk;
+
+  end architecture;

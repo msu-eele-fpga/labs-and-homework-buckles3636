@@ -24,12 +24,13 @@ architecture Behavioral of clock_divider is
   --3). Truncate the 4 decimal bits off
   -----------------------------------------------------------------------------
 
-  --Note: Additional constants must be inserted for the reciprocal of every clock cycle 
-  constant rec_clk_20ns : unsigned(26 downto 0) := to_unsigned(50000000, 27);  -- reciprocal for 20ns clock
-  constant rec_clk_10ns : unsigned(26 downto 0) := to_unsigned(100000000, 27); -- reciprocal for 10ns clock
-
+  --Calulate recepricol of sub clock
+  constant sub_clk_int : integer := (clk_period / 1 ns);
+  constant sub_clk_rec : unsigned := to_unsigned(1000000000 / sub_clk_int, 27);
+  
+  --Signals used to calculate cycle limit 
   signal num_clock_cycles : unsigned(34 downto 0);
-  signal count          : unsigned(30 downto 0);
+  signal count          : unsigned(30 downto 0) := (others => '0');
   signal count_limit    : unsigned(30 downto 0);
   
   signal int_sub_clk : std_ulogic; --Internal sub clock (to this script)
@@ -39,16 +40,10 @@ begin
   -- Process to calculate the cycle limit based on the base_period (without division)
   process (base_period)
   begin
-    --Note: Additional if statment must be inserted for other clock periods
-    if (clk_period = 10 ns) then
-      --Multiply to find number of clock cycles required
-      num_clock_cycles <= (base_period * rec_clk_10ns);
-      --Truncate last 4 bits 
-      count_limit <= num_clock_cycles(34 downto 4);
-    else
-      num_clock_cycles <= (base_period * rec_clk_20ns);
-      count_limit    <= num_clock_cycles(34 downto 4);
-    end if;
+    --Multiply to find number of clock cycles required
+    num_clock_cycles <= (base_period * sub_clk_rec);
+    --Truncate last 4 bits 
+    count_limit <= num_clock_cycles(34 downto 4);
   end process;
 
   -- Sub clock process
