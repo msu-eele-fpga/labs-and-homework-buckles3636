@@ -10,7 +10,7 @@ entity timed_counter is
 
   port (
     clk    : in std_ulogic;
-    enable : in boolean;
+    enable : in std_ulogic;
     done   : out boolean
   );
 
@@ -25,9 +25,9 @@ begin
   COUNTER : process (clk)
   begin
     if rising_edge(clk) then
-      if enable = false then
+      if (enable = '1') then
         index <= 0;
-        done  <= false;
+        done <= false;
       elsif index = COUNTER_LIMIT then
         done <= true;
       else
@@ -35,4 +35,5 @@ begin
       end if;
     end if;
   end process;
+
 end architecture;
