@@ -21,7 +21,7 @@ end entity led_patterns;
 architecture rtl of led_patterns is
 
   --Defining main states 
-  type State_Type is (S0, S1, S2, S3, S4);
+  type State_Type is (S0, S1, S2, S3, S4, S5);
   signal current_state, next_state : State_Type;
 
   --Signals to use timed counter
@@ -36,7 +36,8 @@ architecture rtl of led_patterns is
 
   --Signals for led patterns
   signal led_S0, led_S1, led_S2, led_S3, led_S4 : std_ulogic_vector(6 downto 0);
-  signal int_led                                : std_ulogic_vector(6 downto 0);
+  signal int_led                                : std_ulogic_vector(7 downto 0);
+ 
   --Define Componets
   component clock_divider is
     generic (
@@ -121,11 +122,13 @@ begin
   begin
     if (rst = '1') then
       current_state <= S0; -- Reset to S0
-    elsif (rising_edge(clk)) then
-      tc_enable <= '0';
+    elsif (hps_led_control = true) then 
+      current_state <= S5; -- Set leds to register values
+    elsif (rising_edge(clk)) then 
+      tc_enable <= '0'; --Reset timed counter every clock
       if (pb_debounced = '1') then
-        tc_enable     <= '1';
-        current_state <= next_state;
+        tc_enable     <= '1'; -- When button is pressed send a pulse to timed counter component, this resets and starts the timer
+        current_state <= next_state; --Transition to next state 
       end if;
     end if;
   end process;
@@ -133,6 +136,7 @@ begin
   -- Next state logic process 
   NEXT_STATE_LOGIC : process (switches) is
   begin
+    --Set next state logic according to swithces, if switch is not an option stay in current state
     case switches is
       when "0001" =>
         next_state <= S1;
@@ -143,7 +147,7 @@ begin
       when "0100" =>
         next_state <= S4;
       when others =>
-        next_state <= S0;
+        next_state <= current_state;
     end case;
   end process;
 
@@ -151,24 +155,29 @@ begin
   OUTPUT_LOGIC : process (current_state, tc_done) is
   begin
     if (tc_done = true) then
+      --Set pattern according to state and concatonate subclock to the first led
       case current_state is
         when S0 =>
-          int_led <= led_S0;
+          int_led <= sub_clk & led_S0;
         when S1 =>
-          int_led <= led_S1;
+          int_led <= sub_clk & led_S1;
         when S2 =>
-          int_led <= led_S2;
+          int_led <= sub_clk & led_S2;
         when S3 =>
-          int_led <= led_S3;
+          int_led <= sub_clk & led_S3;
         when S4 =>
-          int_led <= led_S4;
+          int_led <= sub_clk & led_S4;
+        when S5 =>
+          int_led <= led_reg;
       end case;
     else
-      int_led <= "000" & switches;
+      int_led <= "0000" & switches;
     end if;
   end process;
 
   --Led pattern processes
+
+  --Shift One LED Right
   LED_SHIFT_RIGHT : process (sub_clk, rst)
   begin
     if rst = '1' then
@@ -178,6 +187,7 @@ begin
     end if;
   end process;
 
+  --Shift Two LEDs Left
   TWO_LED_SHIFT_LEFT : process (sub_clk, rst)
   begin
     if rst = '1' then
@@ -187,6 +197,7 @@ begin
     end if;
   end process;
 
+  --LED Binary Up Counter
   BINARY_UP_COUNTER : process (sub_clk, rst)
     variable up_counter : unsigned(6 downto 0) := (others => '0'); -- 7-bit counter
   begin
@@ -199,6 +210,7 @@ begin
     end if;
   end process;
 
+  --LED Binary Down Counter
   BINARY_DOWN_COUNTER : process (sub_clk, rst)
     variable down_counter : unsigned(6 downto 0) := (others => '1'); -- 7-bit counter
   begin
@@ -211,6 +223,7 @@ begin
     end if;
   end process;
 
+  --LED "Pong" Custom Pattern
   LED_PONG : process (sub_clk, rst)
   begin
     if rst = '1' then
@@ -220,7 +233,7 @@ begin
     end if;
   end process;
 
-  led(6 downto 0) <= int_led;
-  led(7)          <= sub_clk;
+  --Set LED output according to internal signal
+  led <= int_led;
 
 end architecture;
