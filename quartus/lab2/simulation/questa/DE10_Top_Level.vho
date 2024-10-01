@@ -17,7 +17,7 @@
 -- PROGRAM "Quartus Prime"
 -- VERSION "Version 23.1std.1 Build 993 05/14/2024 SC Lite Edition"
 
--- DATE "08/27/2024 14:24:33"
+-- DATE "09/20/2024 23:29:25"
 
 -- 
 -- Device: Altera 5CSEBA6U23I7 Package UFBGA672
@@ -41,9 +41,9 @@ ENTITY 	DE10_Top_Level IS
 	FPGA_CLK3_50 : IN std_logic;
 	KEY : IN std_logic_vector(1 DOWNTO 0);
 	SW : IN std_logic_vector(3 DOWNTO 0);
-	LED : BUFFER std_logic_vector(7 DOWNTO 0);
-	Audio_Mini_GPIO_0 : BUFFER std_logic_vector(33 DOWNTO 0);
-	Audio_Mini_GPIO_1 : BUFFER std_logic_vector(12 DOWNTO 0)
+	LED : OUT std_logic_vector(7 DOWNTO 0);
+	Audio_Mini_GPIO_0 : INOUT std_logic_vector(33 DOWNTO 0);
+	Audio_Mini_GPIO_1 : INOUT std_logic_vector(12 DOWNTO 0)
 	);
 END DE10_Top_Level;
 
@@ -130,8 +130,6 @@ SIGNAL ww_FPGA_CLK3_50 : std_logic;
 SIGNAL ww_KEY : std_logic_vector(1 DOWNTO 0);
 SIGNAL ww_SW : std_logic_vector(3 DOWNTO 0);
 SIGNAL ww_LED : std_logic_vector(7 DOWNTO 0);
-SIGNAL ww_Audio_Mini_GPIO_0 : std_logic_vector(33 DOWNTO 0);
-SIGNAL ww_Audio_Mini_GPIO_1 : std_logic_vector(12 DOWNTO 0);
 SIGNAL \FPGA_CLK1_50~input_o\ : std_logic;
 SIGNAL \FPGA_CLK2_50~input_o\ : std_logic;
 SIGNAL \FPGA_CLK3_50~input_o\ : std_logic;
@@ -198,8 +196,6 @@ ww_FPGA_CLK3_50 <= FPGA_CLK3_50;
 ww_KEY <= KEY;
 ww_SW <= SW;
 LED <= ww_LED;
-Audio_Mini_GPIO_0 <= ww_Audio_Mini_GPIO_0;
-Audio_Mini_GPIO_1 <= ww_Audio_Mini_GPIO_1;
 ww_devoe <= devoe;
 ww_devclrn <= devclrn;
 ww_devpor <= devpor;
@@ -319,7 +315,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(0));
+	o => Audio_Mini_GPIO_0(0));
 
 -- Location: IOOBUF_X38_Y81_N36
 \Audio_Mini_GPIO_0[1]~output\ : cyclonev_io_obuf
@@ -332,7 +328,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(1));
+	o => Audio_Mini_GPIO_0(1));
 
 -- Location: IOOBUF_X40_Y0_N19
 \Audio_Mini_GPIO_0[2]~output\ : cyclonev_io_obuf
@@ -345,7 +341,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(2));
+	o => Audio_Mini_GPIO_0(2));
 
 -- Location: IOOBUF_X32_Y81_N19
 \Audio_Mini_GPIO_0[3]~output\ : cyclonev_io_obuf
@@ -358,7 +354,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(3));
+	o => Audio_Mini_GPIO_0(3));
 
 -- Location: IOOBUF_X38_Y81_N53
 \Audio_Mini_GPIO_0[4]~output\ : cyclonev_io_obuf
@@ -371,7 +367,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(4));
+	o => Audio_Mini_GPIO_0(4));
 
 -- Location: IOOBUF_X60_Y0_N53
 \Audio_Mini_GPIO_0[5]~output\ : cyclonev_io_obuf
@@ -384,7 +380,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(5));
+	o => Audio_Mini_GPIO_0(5));
 
 -- Location: IOOBUF_X34_Y0_N76
 \Audio_Mini_GPIO_0[6]~output\ : cyclonev_io_obuf
@@ -397,7 +393,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(6));
+	o => Audio_Mini_GPIO_0(6));
 
 -- Location: IOOBUF_X62_Y0_N53
 \Audio_Mini_GPIO_0[7]~output\ : cyclonev_io_obuf
@@ -410,7 +406,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(7));
+	o => Audio_Mini_GPIO_0(7));
 
 -- Location: IOOBUF_X26_Y0_N93
 \Audio_Mini_GPIO_0[8]~output\ : cyclonev_io_obuf
@@ -423,7 +419,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(8));
+	o => Audio_Mini_GPIO_0(8));
 
 -- Location: IOOBUF_X36_Y0_N36
 \Audio_Mini_GPIO_0[9]~output\ : cyclonev_io_obuf
@@ -436,7 +432,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(9));
+	o => Audio_Mini_GPIO_0(9));
 
 -- Location: IOOBUF_X8_Y0_N36
 \Audio_Mini_GPIO_0[10]~output\ : cyclonev_io_obuf
@@ -449,7 +445,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(10));
+	o => Audio_Mini_GPIO_0(10));
 
 -- Location: IOOBUF_X60_Y0_N36
 \Audio_Mini_GPIO_0[11]~output\ : cyclonev_io_obuf
@@ -462,7 +458,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(11));
+	o => Audio_Mini_GPIO_0(11));
 
 -- Location: IOOBUF_X82_Y0_N59
 \Audio_Mini_GPIO_0[12]~output\ : cyclonev_io_obuf
@@ -475,7 +471,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(12));
+	o => Audio_Mini_GPIO_0(12));
 
 -- Location: IOOBUF_X8_Y0_N53
 \Audio_Mini_GPIO_0[13]~output\ : cyclonev_io_obuf
@@ -488,7 +484,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(13));
+	o => Audio_Mini_GPIO_0(13));
 
 -- Location: IOOBUF_X76_Y0_N2
 \Audio_Mini_GPIO_0[14]~output\ : cyclonev_io_obuf
@@ -501,7 +497,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(14));
+	o => Audio_Mini_GPIO_0(14));
 
 -- Location: IOOBUF_X82_Y0_N42
 \Audio_Mini_GPIO_0[15]~output\ : cyclonev_io_obuf
@@ -514,7 +510,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(15));
+	o => Audio_Mini_GPIO_0(15));
 
 -- Location: IOOBUF_X40_Y81_N2
 \Audio_Mini_GPIO_0[16]~output\ : cyclonev_io_obuf
@@ -527,7 +523,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(16));
+	o => Audio_Mini_GPIO_0(16));
 
 -- Location: IOOBUF_X70_Y0_N19
 \Audio_Mini_GPIO_0[17]~output\ : cyclonev_io_obuf
@@ -540,7 +536,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(17));
+	o => Audio_Mini_GPIO_0(17));
 
 -- Location: IOOBUF_X84_Y0_N19
 \Audio_Mini_GPIO_0[18]~output\ : cyclonev_io_obuf
@@ -553,7 +549,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(18));
+	o => Audio_Mini_GPIO_0(18));
 
 -- Location: IOOBUF_X84_Y0_N2
 \Audio_Mini_GPIO_0[19]~output\ : cyclonev_io_obuf
@@ -566,7 +562,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(19));
+	o => Audio_Mini_GPIO_0(19));
 
 -- Location: IOOBUF_X89_Y4_N62
 \Audio_Mini_GPIO_0[20]~output\ : cyclonev_io_obuf
@@ -579,7 +575,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(20));
+	o => Audio_Mini_GPIO_0(20));
 
 -- Location: IOOBUF_X89_Y8_N56
 \Audio_Mini_GPIO_0[21]~output\ : cyclonev_io_obuf
@@ -592,7 +588,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(21));
+	o => Audio_Mini_GPIO_0(21));
 
 -- Location: IOOBUF_X68_Y0_N2
 \Audio_Mini_GPIO_0[22]~output\ : cyclonev_io_obuf
@@ -605,7 +601,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(22));
+	o => Audio_Mini_GPIO_0(22));
 
 -- Location: IOOBUF_X32_Y0_N19
 \Audio_Mini_GPIO_0[23]~output\ : cyclonev_io_obuf
@@ -618,7 +614,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(23));
+	o => Audio_Mini_GPIO_0(23));
 
 -- Location: IOOBUF_X68_Y0_N19
 \Audio_Mini_GPIO_0[24]~output\ : cyclonev_io_obuf
@@ -631,7 +627,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(24));
+	o => Audio_Mini_GPIO_0(24));
 
 -- Location: IOOBUF_X60_Y0_N2
 \Audio_Mini_GPIO_0[25]~output\ : cyclonev_io_obuf
@@ -644,7 +640,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(25));
+	o => Audio_Mini_GPIO_0(25));
 
 -- Location: IOOBUF_X89_Y6_N22
 \Audio_Mini_GPIO_0[26]~output\ : cyclonev_io_obuf
@@ -657,7 +653,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(26));
+	o => Audio_Mini_GPIO_0(26));
 
 -- Location: IOOBUF_X89_Y6_N5
 \Audio_Mini_GPIO_0[27]~output\ : cyclonev_io_obuf
@@ -670,7 +666,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(27));
+	o => Audio_Mini_GPIO_0(27));
 
 -- Location: IOOBUF_X89_Y25_N56
 \Audio_Mini_GPIO_0[28]~output\ : cyclonev_io_obuf
@@ -683,7 +679,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(28));
+	o => Audio_Mini_GPIO_0(28));
 
 -- Location: IOOBUF_X89_Y23_N39
 \Audio_Mini_GPIO_0[29]~output\ : cyclonev_io_obuf
@@ -696,7 +692,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(29));
+	o => Audio_Mini_GPIO_0(29));
 
 -- Location: IOOBUF_X8_Y0_N2
 \Audio_Mini_GPIO_0[30]~output\ : cyclonev_io_obuf
@@ -709,7 +705,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(30));
+	o => Audio_Mini_GPIO_0(30));
 
 -- Location: IOOBUF_X89_Y23_N56
 \Audio_Mini_GPIO_0[31]~output\ : cyclonev_io_obuf
@@ -722,7 +718,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(31));
+	o => Audio_Mini_GPIO_0(31));
 
 -- Location: IOOBUF_X56_Y0_N19
 \Audio_Mini_GPIO_0[32]~output\ : cyclonev_io_obuf
@@ -735,7 +731,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(32));
+	o => Audio_Mini_GPIO_0(32));
 
 -- Location: IOOBUF_X8_Y0_N19
 \Audio_Mini_GPIO_0[33]~output\ : cyclonev_io_obuf
@@ -748,7 +744,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_0(33));
+	o => Audio_Mini_GPIO_0(33));
 
 -- Location: IOOBUF_X84_Y0_N53
 \Audio_Mini_GPIO_1[0]~output\ : cyclonev_io_obuf
@@ -761,7 +757,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_1(0));
+	o => Audio_Mini_GPIO_1(0));
 
 -- Location: IOOBUF_X78_Y0_N2
 \Audio_Mini_GPIO_1[1]~output\ : cyclonev_io_obuf
@@ -774,7 +770,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_1(1));
+	o => Audio_Mini_GPIO_1(1));
 
 -- Location: IOOBUF_X80_Y0_N36
 \Audio_Mini_GPIO_1[2]~output\ : cyclonev_io_obuf
@@ -787,7 +783,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_1(2));
+	o => Audio_Mini_GPIO_1(2));
 
 -- Location: IOOBUF_X76_Y0_N53
 \Audio_Mini_GPIO_1[3]~output\ : cyclonev_io_obuf
@@ -800,7 +796,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_1(3));
+	o => Audio_Mini_GPIO_1(3));
 
 -- Location: IOOBUF_X74_Y0_N76
 \Audio_Mini_GPIO_1[4]~output\ : cyclonev_io_obuf
@@ -813,7 +809,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_1(4));
+	o => Audio_Mini_GPIO_1(4));
 
 -- Location: IOOBUF_X78_Y0_N36
 \Audio_Mini_GPIO_1[5]~output\ : cyclonev_io_obuf
@@ -826,7 +822,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_1(5));
+	o => Audio_Mini_GPIO_1(5));
 
 -- Location: IOOBUF_X89_Y4_N45
 \Audio_Mini_GPIO_1[6]~output\ : cyclonev_io_obuf
@@ -839,7 +835,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_1(6));
+	o => Audio_Mini_GPIO_1(6));
 
 -- Location: IOOBUF_X74_Y0_N42
 \Audio_Mini_GPIO_1[7]~output\ : cyclonev_io_obuf
@@ -852,7 +848,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_1(7));
+	o => Audio_Mini_GPIO_1(7));
 
 -- Location: IOOBUF_X76_Y0_N19
 \Audio_Mini_GPIO_1[8]~output\ : cyclonev_io_obuf
@@ -865,7 +861,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_1(8));
+	o => Audio_Mini_GPIO_1(8));
 
 -- Location: IOOBUF_X72_Y0_N53
 \Audio_Mini_GPIO_1[9]~output\ : cyclonev_io_obuf
@@ -878,7 +874,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_1(9));
+	o => Audio_Mini_GPIO_1(9));
 
 -- Location: IOOBUF_X74_Y0_N59
 \Audio_Mini_GPIO_1[10]~output\ : cyclonev_io_obuf
@@ -891,7 +887,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_1(10));
+	o => Audio_Mini_GPIO_1(10));
 
 -- Location: IOOBUF_X70_Y0_N36
 \Audio_Mini_GPIO_1[11]~output\ : cyclonev_io_obuf
@@ -904,7 +900,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_1(11));
+	o => Audio_Mini_GPIO_1(11));
 
 -- Location: IOOBUF_X70_Y0_N53
 \Audio_Mini_GPIO_1[12]~output\ : cyclonev_io_obuf
@@ -917,7 +913,7 @@ GENERIC MAP (
 PORT MAP (
 	i => VCC,
 	devoe => ww_devoe,
-	o => ww_Audio_Mini_GPIO_1(12));
+	o => Audio_Mini_GPIO_1(12));
 
 -- Location: IOIBUF_X89_Y25_N4
 \SW[0]~input\ : cyclonev_io_ibuf
@@ -1026,7 +1022,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(0),
+	i => Audio_Mini_GPIO_0(0),
 	o => \Audio_Mini_GPIO_0[0]~input_o\);
 
 -- Location: IOIBUF_X38_Y81_N35
@@ -1037,7 +1033,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(1),
+	i => Audio_Mini_GPIO_0(1),
 	o => \Audio_Mini_GPIO_0[1]~input_o\);
 
 -- Location: IOIBUF_X40_Y0_N18
@@ -1048,7 +1044,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(2),
+	i => Audio_Mini_GPIO_0(2),
 	o => \Audio_Mini_GPIO_0[2]~input_o\);
 
 -- Location: IOIBUF_X32_Y81_N18
@@ -1059,7 +1055,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(3),
+	i => Audio_Mini_GPIO_0(3),
 	o => \Audio_Mini_GPIO_0[3]~input_o\);
 
 -- Location: IOIBUF_X38_Y81_N52
@@ -1070,7 +1066,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(4),
+	i => Audio_Mini_GPIO_0(4),
 	o => \Audio_Mini_GPIO_0[4]~input_o\);
 
 -- Location: IOIBUF_X60_Y0_N52
@@ -1081,7 +1077,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(5),
+	i => Audio_Mini_GPIO_0(5),
 	o => \Audio_Mini_GPIO_0[5]~input_o\);
 
 -- Location: IOIBUF_X34_Y0_N75
@@ -1092,7 +1088,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(6),
+	i => Audio_Mini_GPIO_0(6),
 	o => \Audio_Mini_GPIO_0[6]~input_o\);
 
 -- Location: IOIBUF_X62_Y0_N52
@@ -1103,7 +1099,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(7),
+	i => Audio_Mini_GPIO_0(7),
 	o => \Audio_Mini_GPIO_0[7]~input_o\);
 
 -- Location: IOIBUF_X26_Y0_N92
@@ -1114,7 +1110,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(8),
+	i => Audio_Mini_GPIO_0(8),
 	o => \Audio_Mini_GPIO_0[8]~input_o\);
 
 -- Location: IOIBUF_X36_Y0_N35
@@ -1125,7 +1121,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(9),
+	i => Audio_Mini_GPIO_0(9),
 	o => \Audio_Mini_GPIO_0[9]~input_o\);
 
 -- Location: IOIBUF_X8_Y0_N35
@@ -1136,7 +1132,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(10),
+	i => Audio_Mini_GPIO_0(10),
 	o => \Audio_Mini_GPIO_0[10]~input_o\);
 
 -- Location: IOIBUF_X60_Y0_N35
@@ -1147,7 +1143,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(11),
+	i => Audio_Mini_GPIO_0(11),
 	o => \Audio_Mini_GPIO_0[11]~input_o\);
 
 -- Location: IOIBUF_X82_Y0_N58
@@ -1158,7 +1154,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(12),
+	i => Audio_Mini_GPIO_0(12),
 	o => \Audio_Mini_GPIO_0[12]~input_o\);
 
 -- Location: IOIBUF_X8_Y0_N52
@@ -1169,7 +1165,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(13),
+	i => Audio_Mini_GPIO_0(13),
 	o => \Audio_Mini_GPIO_0[13]~input_o\);
 
 -- Location: IOIBUF_X76_Y0_N1
@@ -1180,7 +1176,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(14),
+	i => Audio_Mini_GPIO_0(14),
 	o => \Audio_Mini_GPIO_0[14]~input_o\);
 
 -- Location: IOIBUF_X82_Y0_N41
@@ -1191,7 +1187,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(15),
+	i => Audio_Mini_GPIO_0(15),
 	o => \Audio_Mini_GPIO_0[15]~input_o\);
 
 -- Location: IOIBUF_X40_Y81_N1
@@ -1202,7 +1198,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(16),
+	i => Audio_Mini_GPIO_0(16),
 	o => \Audio_Mini_GPIO_0[16]~input_o\);
 
 -- Location: IOIBUF_X70_Y0_N18
@@ -1213,7 +1209,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(17),
+	i => Audio_Mini_GPIO_0(17),
 	o => \Audio_Mini_GPIO_0[17]~input_o\);
 
 -- Location: IOIBUF_X84_Y0_N18
@@ -1224,7 +1220,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(18),
+	i => Audio_Mini_GPIO_0(18),
 	o => \Audio_Mini_GPIO_0[18]~input_o\);
 
 -- Location: IOIBUF_X84_Y0_N1
@@ -1235,7 +1231,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(19),
+	i => Audio_Mini_GPIO_0(19),
 	o => \Audio_Mini_GPIO_0[19]~input_o\);
 
 -- Location: IOIBUF_X89_Y4_N61
@@ -1246,7 +1242,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(20),
+	i => Audio_Mini_GPIO_0(20),
 	o => \Audio_Mini_GPIO_0[20]~input_o\);
 
 -- Location: IOIBUF_X89_Y8_N55
@@ -1257,7 +1253,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(21),
+	i => Audio_Mini_GPIO_0(21),
 	o => \Audio_Mini_GPIO_0[21]~input_o\);
 
 -- Location: IOIBUF_X68_Y0_N1
@@ -1268,7 +1264,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(22),
+	i => Audio_Mini_GPIO_0(22),
 	o => \Audio_Mini_GPIO_0[22]~input_o\);
 
 -- Location: IOIBUF_X32_Y0_N18
@@ -1279,7 +1275,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(23),
+	i => Audio_Mini_GPIO_0(23),
 	o => \Audio_Mini_GPIO_0[23]~input_o\);
 
 -- Location: IOIBUF_X68_Y0_N18
@@ -1290,7 +1286,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(24),
+	i => Audio_Mini_GPIO_0(24),
 	o => \Audio_Mini_GPIO_0[24]~input_o\);
 
 -- Location: IOIBUF_X60_Y0_N1
@@ -1301,7 +1297,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(25),
+	i => Audio_Mini_GPIO_0(25),
 	o => \Audio_Mini_GPIO_0[25]~input_o\);
 
 -- Location: IOIBUF_X89_Y6_N21
@@ -1312,7 +1308,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(26),
+	i => Audio_Mini_GPIO_0(26),
 	o => \Audio_Mini_GPIO_0[26]~input_o\);
 
 -- Location: IOIBUF_X89_Y6_N4
@@ -1323,7 +1319,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(27),
+	i => Audio_Mini_GPIO_0(27),
 	o => \Audio_Mini_GPIO_0[27]~input_o\);
 
 -- Location: IOIBUF_X89_Y25_N55
@@ -1334,7 +1330,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(28),
+	i => Audio_Mini_GPIO_0(28),
 	o => \Audio_Mini_GPIO_0[28]~input_o\);
 
 -- Location: IOIBUF_X89_Y23_N38
@@ -1345,7 +1341,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(29),
+	i => Audio_Mini_GPIO_0(29),
 	o => \Audio_Mini_GPIO_0[29]~input_o\);
 
 -- Location: IOIBUF_X8_Y0_N1
@@ -1356,7 +1352,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(30),
+	i => Audio_Mini_GPIO_0(30),
 	o => \Audio_Mini_GPIO_0[30]~input_o\);
 
 -- Location: IOIBUF_X89_Y23_N55
@@ -1367,7 +1363,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(31),
+	i => Audio_Mini_GPIO_0(31),
 	o => \Audio_Mini_GPIO_0[31]~input_o\);
 
 -- Location: IOIBUF_X56_Y0_N18
@@ -1378,7 +1374,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(32),
+	i => Audio_Mini_GPIO_0(32),
 	o => \Audio_Mini_GPIO_0[32]~input_o\);
 
 -- Location: IOIBUF_X8_Y0_N18
@@ -1389,7 +1385,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_0(33),
+	i => Audio_Mini_GPIO_0(33),
 	o => \Audio_Mini_GPIO_0[33]~input_o\);
 
 -- Location: IOIBUF_X84_Y0_N52
@@ -1400,7 +1396,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_1(0),
+	i => Audio_Mini_GPIO_1(0),
 	o => \Audio_Mini_GPIO_1[0]~input_o\);
 
 -- Location: IOIBUF_X78_Y0_N1
@@ -1411,7 +1407,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_1(1),
+	i => Audio_Mini_GPIO_1(1),
 	o => \Audio_Mini_GPIO_1[1]~input_o\);
 
 -- Location: IOIBUF_X80_Y0_N35
@@ -1422,7 +1418,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_1(2),
+	i => Audio_Mini_GPIO_1(2),
 	o => \Audio_Mini_GPIO_1[2]~input_o\);
 
 -- Location: IOIBUF_X76_Y0_N52
@@ -1433,7 +1429,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_1(3),
+	i => Audio_Mini_GPIO_1(3),
 	o => \Audio_Mini_GPIO_1[3]~input_o\);
 
 -- Location: IOIBUF_X74_Y0_N75
@@ -1444,7 +1440,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_1(4),
+	i => Audio_Mini_GPIO_1(4),
 	o => \Audio_Mini_GPIO_1[4]~input_o\);
 
 -- Location: IOIBUF_X78_Y0_N35
@@ -1455,7 +1451,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_1(5),
+	i => Audio_Mini_GPIO_1(5),
 	o => \Audio_Mini_GPIO_1[5]~input_o\);
 
 -- Location: IOIBUF_X89_Y4_N44
@@ -1466,7 +1462,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_1(6),
+	i => Audio_Mini_GPIO_1(6),
 	o => \Audio_Mini_GPIO_1[6]~input_o\);
 
 -- Location: IOIBUF_X74_Y0_N41
@@ -1477,7 +1473,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_1(7),
+	i => Audio_Mini_GPIO_1(7),
 	o => \Audio_Mini_GPIO_1[7]~input_o\);
 
 -- Location: IOIBUF_X76_Y0_N18
@@ -1488,7 +1484,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_1(8),
+	i => Audio_Mini_GPIO_1(8),
 	o => \Audio_Mini_GPIO_1[8]~input_o\);
 
 -- Location: IOIBUF_X72_Y0_N52
@@ -1499,7 +1495,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_1(9),
+	i => Audio_Mini_GPIO_1(9),
 	o => \Audio_Mini_GPIO_1[9]~input_o\);
 
 -- Location: IOIBUF_X74_Y0_N58
@@ -1510,7 +1506,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_1(10),
+	i => Audio_Mini_GPIO_1(10),
 	o => \Audio_Mini_GPIO_1[10]~input_o\);
 
 -- Location: IOIBUF_X70_Y0_N35
@@ -1521,7 +1517,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_1(11),
+	i => Audio_Mini_GPIO_1(11),
 	o => \Audio_Mini_GPIO_1[11]~input_o\);
 
 -- Location: IOIBUF_X70_Y0_N52
@@ -1532,7 +1528,7 @@ GENERIC MAP (
 	simulate_z_as => "z")
 -- pragma translate_on
 PORT MAP (
-	i => ww_Audio_Mini_GPIO_1(12),
+	i => Audio_Mini_GPIO_1(12),
 	o => \Audio_Mini_GPIO_1[12]~input_o\);
 
 -- Location: LABCELL_X42_Y17_N0
