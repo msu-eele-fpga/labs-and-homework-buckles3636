@@ -10,10 +10,10 @@ entity debouncer is
   );
   port
   (
-    clk       : in std_ulogic;
-    rst       : in std_ulogic;
-    input     : in std_ulogic;
-    debounced : out std_ulogic
+    clk       : in std_logic;
+    rst       : in std_logic;
+    input     : in std_logic;
+    debounced : out std_logic
   );
 end entity debouncer;
 
@@ -21,7 +21,7 @@ architecture rtl of debouncer is
 
   constant clk_cycles : integer := integer(debounce_time / clk_period); --number of clock cycles output needs to be locked
   signal count : integer range clk_cycles downto 0 := 0; --internal counter
-  signal int_debounced : std_ulogic;
+  signal int_debounced : std_logic;
 
 begin
 

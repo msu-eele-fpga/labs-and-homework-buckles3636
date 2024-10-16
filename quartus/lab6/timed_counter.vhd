@@ -9,8 +9,8 @@ entity timed_counter is
   );
 
   port (
-    clk    : in std_ulogic;
-    enable : in std_ulogic;
+    clk    : in std_logic;
+    enable : in std_logic;
     done   : out boolean
   );
 

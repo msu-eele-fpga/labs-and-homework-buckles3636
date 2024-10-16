@@ -9,10 +9,10 @@ entity clock_divider is
   );
   port
   (
-    clk         : in std_ulogic;
-    rst         : in std_ulogic;
+    clk         : in std_logic;
+    rst         : in std_logic;
     base_period : in unsigned(7 downto 0); -- 8-bit base period in seconds (fixed-point 0000.0000)
-    sub_clk     : out std_ulogic
+    sub_clk     : out std_logic
   );
 end entity;
 
@@ -33,7 +33,7 @@ architecture Behavioral of clock_divider is
   signal count          : unsigned(30 downto 0) := (others => '0');
   signal count_limit    : unsigned(30 downto 0);
   
-  signal int_sub_clk : std_ulogic; --Internal sub clock (to this script)
+  signal int_sub_clk : std_logic; --Internal sub clock (to this script)
 
 begin
 
