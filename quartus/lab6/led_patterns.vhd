@@ -7,14 +7,14 @@ entity led_patterns is
     system_clock_period : time := 20 ns
   );
   port (
-    clk             : in std_ulogic;
-    rst             : in std_ulogic;
-    push_button     : in std_ulogic;
-    switches        : in std_ulogic_vector(3 downto 0);
-    hps_led_control : in boolean;
+    clk             : in std_logic;
+    rst             : in std_logic;
+    push_button     : in std_logic;
+    switches        : in std_logic_vector(3 downto 0);
+    hps_led_control : in std_logic;
     base_period     : in unsigned(7 downto 0);
-    led_reg         : in std_ulogic_vector(7 downto 0);
-    led             : out std_ulogic_vector(7 downto 0)
+    led_reg         : in std_logic_vector(7 downto 0);
+    led             : out std_logic_vector(7 downto 0)
   );
 end entity led_patterns;
 
@@ -25,18 +25,18 @@ architecture rtl of led_patterns is
   signal current_state, next_state : State_Type;
 
   --Signals to use timed counter
-  signal tc_enable : std_ulogic;
+  signal tc_enable : std_logic;
   signal tc_done   : boolean;
 
   --Sub clock signal for patterns
-  signal sub_clk : std_ulogic;
+  signal sub_clk : std_logic;
 
   --Signals to debounce button
-  signal pb_debounced : std_ulogic;
+  signal pb_debounced : std_logic;
 
   --Signals for led patterns
-  signal led_S0, led_S1, led_S2, led_S3, led_S4 : std_ulogic_vector(6 downto 0);
-  signal int_led                                : std_ulogic_vector(7 downto 0);
+  signal led_S0, led_S1, led_S2, led_S3, led_S4 : std_logic_vector(6 downto 0);
+  signal int_led                                : std_logic_vector(7 downto 0);
  
   --Define Componets
   component clock_divider is
@@ -44,10 +44,10 @@ architecture rtl of led_patterns is
       clk_period : time
     );
     port (
-      clk         : in std_ulogic;
-      rst         : in std_ulogic;
+      clk         : in std_logic;
+      rst         : in std_logic;
       base_period : in unsigned(7 downto 0);
-      sub_clk     : out std_ulogic
+      sub_clk     : out std_logic
     );
   end component;
 
@@ -58,8 +58,8 @@ architecture rtl of led_patterns is
     );
 
     port (
-      clk    : in std_ulogic;
-      enable : in std_ulogic;
+      clk    : in std_logic;
+      enable : in std_logic;
       done   : out boolean
     );
   end component;
@@ -70,10 +70,10 @@ architecture rtl of led_patterns is
       debounce_time : time
     );
     port (
-      clk   : in std_ulogic;
-      rst   : in std_ulogic;
-      async : in std_ulogic;
-      sync  : out std_ulogic
+      clk   : in std_logic;
+      rst   : in std_logic;
+      async : in std_logic;
+      sync  : out std_logic
     );
   end component;
 
@@ -122,7 +122,7 @@ begin
   begin
     if (rst = '1') then
       current_state <= S0; -- Reset to S0
-    elsif (hps_led_control = true) then 
+    elsif (hps_led_control = '1') then 
       current_state <= S5; -- Set leds to register values
     elsif (rising_edge(clk)) then 
       tc_enable <= '0'; --Reset timed counter every clock
@@ -206,7 +206,7 @@ begin
       led_S2 <= (others     => '0'); -- Clear LEDs when rst
     elsif rising_edge(sub_clk) then
       up_counter := up_counter + 1; -- Increment the counter
-      led_S2 <= std_ulogic_vector(up_counter); -- Assign counter value to LEDs
+      led_S2 <= std_logic_vector(up_counter); -- Assign counter value to LEDs
     end if;
   end process;
 
@@ -219,7 +219,7 @@ begin
       led_S3 <= (others       => '0'); -- Clear LEDs when rst
     elsif rising_edge(sub_clk) then
       down_counter := down_counter - 1; -- Increment the counter
-      led_S3 <= std_ulogic_vector(down_counter); -- Assign counter value to LEDs
+      led_S3 <= std_logic_vector(down_counter); -- Assign counter value to LEDs
     end if;
   end process;
 

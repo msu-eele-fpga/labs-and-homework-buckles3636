@@ -3,16 +3,16 @@ use ieee.std_logic_1164.all;
 
 entity synchronizer is
   port (
-    clk : in std_ulogic;
-    async : in std_ulogic;
-    sync : out std_ulogic
+    clk : in std_logic;
+    async : in std_logic;
+    sync : out std_logic
   );
 end entity synchronizer;
 
 architecture rtl of synchronizer is
 
-  signal Q1 : std_ulogic;
-  signal int_sync : std_ulogic;
+  signal Q1 : std_logic;
+  signal int_sync : std_logic;
 
 begin
 
