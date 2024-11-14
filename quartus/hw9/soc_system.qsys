@@ -24,17 +24,12 @@
          value = "1";
          type = "int";
       }
-      datum sopceditor_expanded
-      {
-         value = "1";
-         type = "boolean";
-      }
    }
    element master_0
    {
       datum _sortIndex
       {
-         value = "3";
+         value = "2";
          type = "int";
       }
    }
@@ -42,8 +37,24 @@
    {
       datum _sortIndex
       {
-         value = "2";
+         value = "3";
          type = "int";
+      }
+   }
+   element soc_system
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element soc_system
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
       }
    }
    element soc_system
@@ -332,12 +343,7 @@
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
  <interface name="clk" internal="fpga_clk.clk_in" type="clock" dir="end" />
- <interface name="hps_i2c0" internal="hps.i2c0" />
- <interface name="hps_i2c0_clk" internal="hps.i2c0_clk" />
- <interface name="hps_i2c0_scl_in" internal="hps.i2c0_scl_in" />
  <interface name="hps_io" internal="hps.hps_io" type="conduit" dir="end" />
- <interface name="hps_spim0" internal="hps.spim0" />
- <interface name="hps_spim0_sclk_out" internal="hps.spim0_sclk_out" />
  <interface name="memory" internal="hps.memory" type="conduit" dir="end" />
  <interface
    name="pwm_controller"
@@ -923,7 +929,7 @@
    kind="clock"
    version="23.1"
    start="fpga_clk.clk"
-   end="pwm_controller_0.clock" />
+   end="pwm_controller_0.clk" />
  <connection
    kind="clock"
    version="23.1"
@@ -938,7 +944,7 @@
    kind="reset"
    version="23.1"
    start="fpga_clk.clk_reset"
-   end="pwm_controller_0.reset" />
+   end="pwm_controller_0.rst" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.maxAdditionalLatency" value="1" />
 </system>

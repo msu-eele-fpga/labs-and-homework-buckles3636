@@ -13,7 +13,7 @@ entity pwm_controller_avalon is
     avs_readdata  : out std_logic_vector(31 downto 0);
     avs_writedata : in std_logic_vector(31 downto 0);
     -- external I/O; export to top-level
-    output      : out std_logic -- To pin header for oscope
+    pwm_out       : out std_logic -- To pin header for oscope
   );
 end entity pwm_controller_avalon;
 
@@ -27,8 +27,8 @@ architecture rtl of pwm_controller_avalon is
   constant F_DUTY_CYCLE : integer := 11;
 
   --Register signals
-  signal period : std_logic_vector(31 downto 0) := (others => '0');
-  signal duty_cycle     : std_logic_vector(31 downto 0) := (23 => '1', others => '0');
+  signal period : std_logic_vector(31 downto 0) := (23 => '1', others => '0');
+  signal duty_cycle     : std_logic_vector(31 downto 0) := (10 => '1', others => '0');
 
   --Instanciate LED Patterns
   component pwm_controller is
@@ -44,7 +44,7 @@ architecture rtl of pwm_controller_avalon is
     rst        : in  std_logic;
     period     : in  unsigned(W_PERIOD - 1 downto 0);
     duty_cycle : in  unsigned(W_DUTY_CYCLE - 1 downto 0);
-    output     : out std_logic
+    pwm_out    : out std_logic
   );
   end component;
 
@@ -66,7 +66,7 @@ begin
     rst => rst,
 	 period => unsigned(period)(W_PERIOD - 1 downto 0),
     duty_cycle => unsigned(duty_cycle)(W_DUTY_CYCLE - 1 downto 0),
-    output => output
+    pwm_out => pwm_out
   );
 
   --Process to read avalon registers

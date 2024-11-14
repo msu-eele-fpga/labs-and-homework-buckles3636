@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="soc_system" kind="soc_system" version="1.0" fabric="QSYS">
  <!-- Format version 23.1 993 (Future versions may contain additional information.) -->
- <!-- 2024.11.12.23:17:49 -->
+ <!-- 2024.11.13.21:05:05 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1731478669</value>
+  <value>1731557105</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -339,8 +339,8 @@ parameters are a RESULT of the module parameters. -->
    <clockDomainMember>
     <isBridge>false</isBridge>
     <moduleName>pwm_controller_0</moduleName>
-    <slaveName>clock</slaveName>
-    <name>pwm_controller_0.clock</name>
+    <slaveName>clk</slaveName>
+    <name>pwm_controller_0.clk</name>
    </clockDomainMember>
    <clockDomainMember>
     <isBridge>false</isBridge>
@@ -71991,7 +71991,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="associatedClock">
     <type>java.lang.String</type>
-    <value>clock</value>
+    <value>clk</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -71999,7 +71999,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="associatedReset">
     <type>java.lang.String</type>
-    <value>reset</value>
+    <value>rst</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -72294,21 +72294,21 @@ parameters are a RESULT of the module parameters. -->
     <role>writedata</role>
    </port>
   </interface>
-  <interface name="reset" kind="reset_sink" version="23.1">
+  <interface name="export" kind="conduit_end" version="23.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
    <parameter name="associatedClock">
     <type>java.lang.String</type>
-    <value>clock</value>
+    <value>clk</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
     <valid>true</valid>
    </parameter>
-   <parameter name="synchronousEdges">
-    <type>com.altera.sopcmodel.reset.Reset$Edges</type>
-    <value>DEASSERT</value>
+   <parameter name="associatedReset">
+    <type>java.lang.String</type>
+    <value></value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -72330,16 +72330,16 @@ parameters are a RESULT of the module parameters. -->
     <visible>true</visible>
     <valid>true</valid>
    </parameter>
-   <type>reset</type>
+   <type>conduit</type>
    <isStart>false</isStart>
    <port>
-    <name>reset_reset</name>
-    <direction>Input</direction>
+    <name>pwm_out</name>
+    <direction>Output</direction>
     <width>1</width>
-    <role>reset</role>
+    <role>pwm_out</role>
    </port>
   </interface>
-  <interface name="clock" kind="clock_sink" version="23.1">
+  <interface name="clk" kind="clock_sink" version="23.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -72378,27 +72378,27 @@ parameters are a RESULT of the module parameters. -->
    <type>clock</type>
    <isStart>false</isStart>
    <port>
-    <name>clock_clk</name>
+    <name>clk</name>
     <direction>Input</direction>
     <width>1</width>
     <role>clk</role>
    </port>
   </interface>
-  <interface name="export" kind="conduit_end" version="23.1">
+  <interface name="rst" kind="reset_sink" version="23.1">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
    <parameter name="associatedClock">
     <type>java.lang.String</type>
-    <value>clock</value>
+    <value>clk</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
     <valid>true</valid>
    </parameter>
-   <parameter name="associatedReset">
-    <type>java.lang.String</type>
-    <value></value>
+   <parameter name="synchronousEdges">
+    <type>com.altera.sopcmodel.reset.Reset$Edges</type>
+    <value>DEASSERT</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -72420,13 +72420,13 @@ parameters are a RESULT of the module parameters. -->
     <visible>true</visible>
     <valid>true</valid>
    </parameter>
-   <type>conduit</type>
+   <type>reset</type>
    <isStart>false</isStart>
    <port>
-    <name>gpio</name>
+    <name>rst</name>
     <direction>Input</direction>
     <width>1</width>
-    <role>gpio</role>
+    <role>reset</role>
    </port>
   </interface>
  </module>
@@ -80544,11 +80544,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>clk</endConnectionPoint>
  </connection>
  <connection
-   name="fpga_clk.clk/pwm_controller_0.clock"
+   name="fpga_clk.clk/pwm_controller_0.clk"
    kind="clock"
    version="23.1"
    start="fpga_clk.clk"
-   end="pwm_controller_0.clock">
+   end="pwm_controller_0.clk">
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -80568,7 +80568,7 @@ parameters are a RESULT of the module parameters. -->
   <startModule>fpga_clk</startModule>
   <startConnectionPoint>clk</startConnectionPoint>
   <endModule>pwm_controller_0</endModule>
-  <endConnectionPoint>clock</endConnectionPoint>
+  <endConnectionPoint>clk</endConnectionPoint>
  </connection>
  <connection
    name="fpga_clk.clk/hps_bridges.h2f_lw_axi_clock"
@@ -80625,11 +80625,11 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>clk_reset</endConnectionPoint>
  </connection>
  <connection
-   name="fpga_clk.clk_reset/pwm_controller_0.reset"
+   name="fpga_clk.clk_reset/pwm_controller_0.rst"
    kind="reset"
    version="23.1"
    start="fpga_clk.clk_reset"
-   end="pwm_controller_0.reset">
+   end="pwm_controller_0.rst">
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -80649,7 +80649,7 @@ parameters are a RESULT of the module parameters. -->
   <startModule>fpga_clk</startModule>
   <startConnectionPoint>clk_reset</startConnectionPoint>
   <endModule>pwm_controller_0</endModule>
-  <endConnectionPoint>reset</endConnectionPoint>
+  <endConnectionPoint>rst</endConnectionPoint>
  </connection>
  <plugin>
   <instanceCount>1</instanceCount>
