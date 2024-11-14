@@ -245,8 +245,8 @@ architecture de10nano_top_arch of de10nano_top is
       memory_mem_dm                   : out std_logic_vector(3 downto 0);
       memory_oct_rzqin                : in std_logic;
       clk_clk                         : in std_logic;
-      pwm_controller_gpio             : out std_logic;
-      rst_reset_n                     : in std_logic
+      pwm_controller_pwm_out          : out std_logic;
+      reset_reset_n                   : in std_logic
     );
   end component soc_system;
 
@@ -337,8 +337,8 @@ begin
       memory_oct_rzqin   => hps_ddr3_rzq,
 
       clk_clk                  => fpga_clk1_50,
-      pwm_controller_gpio      => gpio_0(9),
-      rst_reset_n              => push_button_n(1) -- hook up to your reset signal; note that reset_reset_n is *active-low*
+      pwm_controller_pwm_out   => gpio_0(9),
+      reset_reset_n            => push_button_n(1) -- hook up to your reset signal; note that reset_reset_n is *active-low*
     );
 
   end architecture de10nano_top_arch;

@@ -39,7 +39,7 @@
 
 set_global_assignment -name FAMILY "Cyclone V"
 set_global_assignment -name DEVICE 5CSEBA6U23I7
-set_global_assignment -name TOP_LEVEL_ENTITY soc_system
+set_global_assignment -name TOP_LEVEL_ENTITY de10nano_top
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 23.1STD.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "20:18:21  NOVEMBER 12, 2024"
 set_global_assignment -name LAST_QUARTUS_VERSION "23.1std.1 Lite Edition"
@@ -315,7 +315,6 @@ set_location_assignment PIN_V10 -to adc_sck
 set_location_assignment PIN_AC4 -to adc_sdi
 set_location_assignment PIN_AD4 -to adc_sdo
 set_global_assignment -name QIP_FILE soc_system/synthesis/soc_system.qip
-set_global_assignment -name QSYS_FILE soc_system.qsys
 set_global_assignment -name VHDL_FILE pwm_controller_avalon.vhd
 set_global_assignment -name VHDL_FILE pwm_controller.vhd
 set_global_assignment -name VHDL_FILE de10nano_top.vhd
