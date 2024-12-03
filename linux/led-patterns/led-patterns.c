@@ -6,6 +6,7 @@
 #include <linux/miscdevice.h>
 #include <linux/types.h>
 #include <linux/fs.h>
+#include <linux/kstrtox.h>
 
 #define HPS_LED_CONTROL_OFFSET 0x0
 #define BASE_PERIOD_OFFSET 0x4
@@ -175,12 +176,123 @@ static int led_patterns_remove(struct platform_device *pdev)
     return 0;
 }
 
+// Return the hps_led_control value to user-spaec via sysfs
+static ssize_t led_reg_show(struct device *dev,
+    struct device_attribute *attr, char *buf)
+{
+    u8 led_reg;
+    struct led_patterns_dev *priv = dev_get_drvdata(dev);
+
+    led_reg = ioread32(priv->led_reg);
+
+    return scnprintf(buf, PAGE_SIZE, "%u\n", led_reg);
+}
+
+// Store the led_reg value
+static ssize_t led_reg_store(struct device *dev,
+    struct device_attribute *attr, const char *buf, size_t size)
+{
+    u8 led_reg;
+    int ret;
+    struct led_patterns_dev *priv = dev_get_drvdata(dev);
+
+    // Parse the string as u8
+    ret = kstrtou8(buf, 0, &led_reg);
+    if (ret < 0) {
+        return ret;
+    }
+
+    iowrite32(led_reg, priv->led_reg);
+
+    // Write was successful, so we return the number of bytes we wrote
+    return size;
+}
+
+// Return the hps_led_control value to user-spaec via sysfs
+static ssize_t hps_led_control_show(struct device *dev,
+    struct device_attribute *attr, char *buf)
+{
+    bool hps_control;
+
+    // Get private led_patterns data out the dev struct
+    struct led_patterns_dev *priv = dev_get_drvdata(dev);
+
+    hps_control = ioread32(priv->hps_led_control);
+
+    return scnprintf(buf, PAGE_SIZE, "%u\n", hps_control);
+}
+
+// Store hps_led_control value
+static ssize_t hps_led_control_store(struct device *dev,
+    struct device_attribute *attr, const char *buf, size_t size)
+{
+    bool hps_control;
+    int ret;
+    struct led_patterns_dev *priv = dev_get_drvdata(dev);
+
+    // Parse stringr ecived as bool
+    ret = kstrtobool(buf, &hps_control);
+    if (ret < 0) {
+        return ret;
+    }
+
+    iowrite32(hps_control, priv->hps_led_control);
+
+    return size;
+}
+
+// Return the base_period value to user-space via sysfs
+static ssize_t base_period_show(struct device *dev,
+    struct device_attribute *attr, char *buf)
+{
+    u8 base_period;
+    struct led_patterns_dev *priv = dev_get_drvdata(dev);
+
+    base_period = ioread32(priv->base_period);
+
+    return scnprintf(buf, PAGE_SIZE, "%u\n", base_period);
+}
+
+// Store the base period value
+static ssize_t base_period_store(struct device *dev,
+    struct device_attribute *attr, const char *buf, size_t size)
+{
+    u8 base_period;
+    int ret;
+    struct led_patterns_dev *priv = dev_get_drvdata(dev);
+
+    //parse string recived as a u8
+    ret = kstrtou8(buf, 0, &base_period);
+    if (ret < 0) {
+        return ret;
+    }
+
+    iowrite32(base_period, priv->base_period);
+
+    return size;
+}
+
 // Define the compatibility property
 static const struct of_device_id led_patterns_of_match[] = {
     { .compatible = "adsd,led_patterns", },
     { }
 };
 MODULE_DEVICE_TABLE(of, led_patterns_of_match);
+
+// Define sysfs attributes
+static DEVICE_ATTR_RW(hps_led_control);
+static DEVICE_ATTR_RW(base_period);
+static DEVICE_ATTR_RW(led_reg);
+
+// Create attribute group
+static struct attribute *led_patterns_attrs[] = {
+    &dev_attr_hps_led_control.attr,
+    &dev_attr_base_period.attr,
+    &dev_attr_led_reg.attr,
+    NULL,
+};
+
+ATTRIBUTE_GROUPS(led_patterns);
 
 // Platfrom device struct for led patterns driver
 static struct platform_driver led_patterns_driver = {
@@ -190,6 +302,7 @@ static struct platform_driver led_patterns_driver = {
         .owner = THIS_MODULE,
         .name = "led_patterns",
         .of_match_table = led_patterns_of_match,
+        .dev_groups = led_patterns_groups,
     },
 };
 
@@ -199,5 +312,3 @@ module_platform_driver(led_patterns_driver);
 MODULE_LICENSE("Dual MIT/GPL");
 MODULE_AUTHOR("Peter Buckley");
 MODULE_DESCRIPTION("led_patterns driver");
-
-
